@@ -1,48 +1,74 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Platform} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import Tasks from './components/Tasks';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './Screens/HomeScreen';
+import SettingsScreen from './Screens/SettingsScreen';
+
+const Tab = createBottomTabNavigator();
 
 
-const text = ['1', '2', '3', '4', '5'];
 
-const completeTask = (index) => {
-  let itemsCopy = [...text];
-  itemsCopy.splice(index, 1);
-  text(itemsCopy)
-}
-
-
-export default function App() {
+export default function App({navigation}) {
   return (
-    <View style={styles.container}>
-      <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>TO-DO</Text>
-        <View style={styles.items}>
-        {
-            text.map((item, index) => {
+    <NavigationContainer>
+     <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarStyle: {
+          backgroundColor: '#54BAB9',
+        },
+        tabBarLabelStyle: {
+          marginBottom: 1,
+          fontWeight: 'bold',
+        },
+          tabBarIcon: ({ focused, color, size }) => {
+            if (route.name === 'Home') {
               return (
-                <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
-                  <Tasks text={item} /> 
-                </TouchableOpacity>
-              )
-            })
-          }
-        </View>
-      </View>
-
-      <StatusBar style="auto" />
-    </View>
+                <Ionicons
+                  name={
+                    focused
+                      ? 'sunny-sharp'
+                      : 'sunny-outline'
+                  }
+                  size={size}
+                  color={color}
+                />
+              );
+            } else if (route.name === 'Settings') {
+              return (
+                <Ionicons
+                  name={focused ? 'settings' : 'settings-outline'}
+                  size={size}
+                  color={color}
+                />
+              );
+            }
+          },
+          tabBarInactiveTintColor: '#40514E',
+          tabBarActiveTintColor: '#40514E',
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+        />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+  </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
+main:{
+  flex: 1,
+  backgroundColor: '#f2f2f2',
+},
   container: {
-    flex: 1,
-    backgroundColor: '#f2f2f2',
+    paddingTop: Platform.OS === 'android' ? 24 : 0,
   },
   tasksWrapper: {
-paddingTop: 80,
 paddingHorizontal: 20,
   },
   sectionTitle: {
