@@ -27,7 +27,7 @@ To run this application, you will need to have the following software installed 
 ### Installation
 1. Clone the repository to your local machine: 
 ```
-$ git clone https://github.com/mahdiuahmed/To-Do-List-React-Native
+$ git clone https://github.com/mahdiuahmed/To-Do-List-React-Native.git
 ```
 2. Install the required packages: 
 ```
